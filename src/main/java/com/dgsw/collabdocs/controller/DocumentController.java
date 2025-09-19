@@ -1,42 +1,45 @@
 package com.dgsw.collabdocs.controller;
 
 import com.dgsw.collabdocs.domain.Document;
-import com.dgsw.collabdocs.repository.DocumentRepository;
+import com.dgsw.collabdocs.service.DocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/documents")
+@RequiredArgsConstructor
 public class DocumentController {
 
-    private final DocumentRepository documentRepository;
-
-    public DocumentController(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
-    }
+    private final DocumentService documentService;
 
     @GetMapping
-    public List<Document> getAll() {
-        return documentRepository.findAll();
+    public List<Document> getAllDocuments() {
+        return documentService.getAllDocuments();
+    }
+
+    @GetMapping("/{id}")
+    public Document getDocument(@PathVariable Long id) {
+        return documentService.getDocument(id).orElseThrow();
     }
 
     @PostMapping
-    public Document create(@RequestBody Document doc) {
-        return documentRepository.save(doc);
+    public Document createDocument(@RequestParam String title,
+                                   @RequestParam String content,
+                                   @RequestParam String author) {
+        return documentService.createDocument(title, content, author);
     }
 
     @PutMapping("/{id}")
-    public Document update(@PathVariable Long id, @RequestBody Document doc) {
-        Document existing = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
-        existing.setTitle(doc.getTitle());
-        existing.setContent(doc.getContent());
-        return documentRepository.save(existing);
+    public Document updateDocument(@PathVariable Long id,
+                                   @RequestParam String title,
+                                   @RequestParam String content) {
+        return documentService.updateDocument(id, title, content);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        documentRepository.deleteById(id);
+    public void deleteDocument(@PathVariable Long id) {
+        documentService.deleteDocument(id);
     }
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #667eea;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #5a67d8;
+    }
+    .message {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .error { color: #e53e3e; }
+    .logout { color: #38a169; }
+  </style>
+</head>
+<body>
+<div class="login-box">
+  <h2>로그인</h2>
+  <div class="message error" id="error"></div>
+  <div class="message logout" id="logout"></div>
+  <form action="/api/auth/login" method="post">
+    <input type="text" name="username" placeholder="아이디" required>
+    <input type="password" name="password" placeholder="비밀번호" required>
+    <button type="submit">로그인</button>
+  </form>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('error') === 'true') {
+    document.getElementById('error').textContent = '아이디 또는 비밀번호가 잘못되었습니다.';
+  }
+  if (params.get('logout') === 'true') {
+    document.getElementById('logout').textContent = '성공적으로 로그아웃되었습니다.';
+  }
+</script>
+</body>
+</html>

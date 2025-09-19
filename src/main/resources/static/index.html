@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Collab Docs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, textarea { display: block; margin-bottom: 10px; width: 300px; }
+        button { margin-right: 10px; }
+        .document { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>문서 관리</h1>
+
+<h2>새 문서 작성</h2>
+<input type="text" id="title" placeholder="제목">
+<textarea id="content" rows="5" placeholder="내용"></textarea>
+<input type="text" id="author" placeholder="작성자">
+<button onclick="createDocument()">생성</button>
+
+<h2>문서 목록</h2>
+<div id="documents"></div>
+
+<script>
+    const apiBase = "http://localhost:8083/api/documents";
+
+    async function fetchDocuments() {
+        const res = await fetch(apiBase);
+        const docs = await res.json();
+        const container = document.getElementById("documents");
+        container.innerHTML = "";
+        docs.forEach(doc => {
+            const div = document.createElement("div");
+            div.className = "document";
+            div.innerHTML = `
+            <strong>${doc.title}</strong> (by ${doc.author})<br>
+            <textarea id="content-${doc.id}" rows="3">${doc.content}</textarea><br>
+            <button onclick="updateDocument(${doc.id})">수정</button>
+            <button onclick="deleteDocument(${doc.id})">삭제</button>
+        `;
+            container.appendChild(div);
+        });
+    }
+
+    async function createDocument() {
+        const title = document.getElementById("title").value;
+        const content = document.getElementById("content").value;
+        const author = document.getElementById("author").value;
+
+        await fetch(apiBase, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}&author=${encodeURIComponent(author)}`
+        });
+
+        document.getElementById("title").value = "";
+        document.getElementById("content").value = "";
+        document.getElementById("author").value = "";
+        fetchDocuments();
+    }
+
+    async function updateDocument(id) {
+        const content = document.getElementById(`content-${id}`).value;
+        const title = prompt("수정할 제목을 입력하세요:", "제목");
+        if (!title) return;
+
+        await fetch(`${apiBase}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`
+        });
+
+        fetchDocuments();
+    }
+
+    async function deleteDocument(id) {
+        if (!confirm("정말 삭제하시겠습니까?")) return;
+        await fetch(`${apiBase}/${id}`, { method: "DELETE" });
+        fetchDocuments();
+    }
+
+    // 초기 로드
+    fetchDocuments();
+</script>
+
+</body>
+</html>

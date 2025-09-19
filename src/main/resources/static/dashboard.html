@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>대시보드</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f4f6f8;
+    }
+    header {
+      background-color: #667eea;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      background-color: #5a67d8;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    header a:hover {
+      background-color: #4c51bf;
+    }
+    main {
+      padding: 40px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .card p {
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>내 문서 대시보드</h1>
+  <a href="/logout">로그아웃</a>
+</header>
+<main>
+  <div class="card">
+    <h2>최근 문서</h2>
+    <p>문서 1, 문서 2, 문서 3 ...</p>
+  </div>
+  <div class="card">
+    <h2>공지사항</h2>
+    <p>새로운 업데이트가 있습니다. 확인해보세요!</p>
+  </div>
+  <div class="card">
+    <h2>사용자 통계</h2>
+    <p>작성한 문서: 5개 / 공동 작업: 3건</p>
+  </div>
+</main>
+</body>
+</html>

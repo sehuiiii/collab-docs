@@ -3,7 +3,9 @@ package com.dgsw.collabdocs.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
+@Table(name = "app_user")  // 테이블 이름 변경
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
