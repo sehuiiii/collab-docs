@@ -15,7 +15,6 @@ public class WebSocketController {
 
     @MessageMapping("/edit/{docId}")
     public void editDocument(@DestinationVariable Long docId, @Payload String content) {
-        // 실시간 편집 브로드캐스트
         template.convertAndSend("/topic/doc/" + docId, content);
     }
 }

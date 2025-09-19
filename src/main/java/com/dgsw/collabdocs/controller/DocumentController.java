@@ -1,4 +1,5 @@
 package com.dgsw.collabdocs.controller;
+
 import com.dgsw.collabdocs.domain.Document;
 import com.dgsw.collabdocs.repository.DocumentRepository;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,8 @@ public class DocumentController {
 
     @PutMapping("/{id}")
     public Document update(@PathVariable Long id, @RequestBody Document doc) {
-        Document existing = documentRepository.findById(id).orElseThrow();
+        Document existing = documentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Document not found"));
         existing.setTitle(doc.getTitle());
         existing.setContent(doc.getContent());
         return documentRepository.save(existing);
@@ -38,4 +40,3 @@ public class DocumentController {
         documentRepository.deleteById(id);
     }
 }
-

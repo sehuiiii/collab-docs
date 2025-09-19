@@ -8,14 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Document {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
 
     @Lob
     private String content;
 
-    private String owner;
+    private String owner; // username
 }
